@@ -16,7 +16,7 @@
             align-items: center;
             overflow-x: hidden;
             position: relative;
-            padding: 1rem;
+            padding: 0;
         }
 
         #video-background {
@@ -52,14 +52,15 @@
 
         .container {
             text-align: center;
-            padding: 1rem;
+            padding: 0.5rem;
             position: relative;
             z-index: 1;
             width: 100%;
             max-width: 600px;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1rem;
+            margin-top: 0.5rem;
         }
 
         .title-container {
@@ -67,7 +68,7 @@
             display: inline-block;
             margin: 0;
             width: 100%;
-            padding-top: 1rem;
+            padding-top: 0.5rem;
         }
 
         h1 {
@@ -180,13 +181,13 @@
 
         .confetti {
             position: fixed;
-            width: 3px;
-            height: 3px;
+            width: 8px;
+            height: 8px;
             background-color: #FFD700;
             border-radius: 50%;
             animation: glitter-explode 1.5s ease-out forwards;
             z-index: 0;
-            box-shadow: 0 0 4px #FFD700;
+            box-shadow: 0 0 8px #FFD700;
             opacity: 0;
         }
 
@@ -209,31 +210,32 @@
             height: 100%;
             background-color: inherit;
             border-radius: 50%;
-            box-shadow: 0 0 4px #FFD700;
+            box-shadow: 0 0 8px #FFD700;
             animation: glitter-explode 1.5s ease-out forwards;
             opacity: 0;
         }
 
         .confetti::before {
-            transform: translateX(-10px);
+            transform: translateX(-15px);
         }
 
         .confetti::after {
-            transform: translateX(10px);
+            transform: translateX(15px);
         }
 
         @media (min-width: 768px) {
             body {
-                padding: 2rem;
+                padding: 1rem;
             }
 
             .container {
-                padding: 2rem;
-                gap: 3rem;
+                padding: 1rem;
+                gap: 2rem;
+                margin-top: 1rem;
             }
 
             .title-container {
-                padding-top: 2rem;
+                padding-top: 1rem;
             }
 
             .timer-container {
@@ -313,7 +315,7 @@
             
             // Random explosion direction and distance
             const angle = (Math.random() * 360) * Math.PI / 180;
-            const distance = Math.random() * 100 + 20; // Random distance between 20px and 120px
+            const distance = Math.random() * 150 + 30; // Random distance between 30px and 180px
             const tx = Math.cos(angle) * distance;
             const ty = Math.sin(angle) * distance;
             glitter.style.setProperty('--tx', `${tx}px`);

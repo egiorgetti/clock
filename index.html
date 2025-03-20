@@ -3,51 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown Timer</title>
+    <title>Ninni's 18th Birthday Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Righteous&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
         }
+
         .container {
             text-align: center;
-            background-color: white;
             padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
         }
+
         h1 {
-            color: #333;
-            margin-bottom: 2rem;
+            font-family: 'Pacifico', cursive;
+            font-size: 4.5rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin: 1rem 0;
+            animation: bounce 2s infinite;
         }
+
         .timer {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #2c3e50;
-            font-family: monospace;
+            font-family: 'Righteous', cursive;
+            font-size: 5rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            backdrop-filter: blur(5px);
         }
-        .target-date {
-            margin-top: 1rem;
-            color: #666;
-            font-size: 1.2rem;
+
+        .images-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            max-width: 1200px;
+            padding: 0 1rem;
+        }
+
+        .birthday-image {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .birthday-image:hover {
+            transform: scale(1.05);
+        }
+
+        .balloon {
+            position: fixed;
+            width: 50px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #ff69b4, #ff1493);
+            border-radius: 50%;
+            animation: float 4s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: confetti-fall 3s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Time Until March 22, 2025 00:00 CET</h1>
+        <h1>Ninni turning 18!</h1>
         <div class="timer" id="timer">00:00:00</div>
-        <div class="target-date">Target Date: March 22, 2025 00:00 CET</div>
+    </div>
+
+    <div class="images-container">
+        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d" alt="Birthday celebration" class="birthday-image">
+        <img src="https://images.unsplash.com/photo-1511795409834-432f7d6fde1f" alt="Birthday cake" class="birthday-image">
+        <img src="https://images.unsplash.com/photo-1511795409834-432f7d6fde1f" alt="Birthday balloons" class="birthday-image">
     </div>
 
     <script>
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(balloon);
+            setTimeout(() => balloon.remove(), 5000);
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 5000);
+        }
+
         function updateTimer() {
-            const targetDate = new Date('2025-03-22T00:00:00+01:00'); // CET timezone
+            const targetDate = new Date('2025-03-22T00:00:00+01:00');
             const now = new Date();
             const difference = targetDate - now;
 
@@ -64,7 +153,11 @@
                 `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
 
-        // Update immediately and then every second
+        // Create balloons and confetti periodically
+        setInterval(createBalloon, 3000);
+        setInterval(createConfetti, 200);
+
+        // Update timer immediately and then every second
         updateTimer();
         setInterval(updateTimer, 1000);
     </script>

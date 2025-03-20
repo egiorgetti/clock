@@ -11,13 +11,22 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d') no-repeat center center fixed;
-            background-size: cover;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
             position: relative;
+        }
+
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
         }
 
         body::before {
@@ -28,7 +37,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, rgba(255, 107, 107, 0.7), rgba(78, 205, 196, 0.7));
-            z-index: 0;
+            z-index: -1;
         }
 
         .container {
@@ -116,6 +125,10 @@
     </style>
 </head>
 <body>
+    <video autoplay muted loop id="video-background">
+        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+    </video>
+
     <div class="container">
         <h1>Ninni turning 18!</h1>
         <div class="timer-container">

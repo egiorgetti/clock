@@ -27,6 +27,7 @@
             width: auto;
             height: auto;
             z-index: -2;
+            pointer-events: none;
         }
 
         body::before {
@@ -125,9 +126,16 @@
     </style>
 </head>
 <body>
-    <video autoplay muted loop id="video-background">
-        <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-    </video>
+    <div id="video-background">
+        <iframe 
+            width="100%" 
+            height="100%" 
+            src="https://www.youtube.com/embed/4vLyqzOr14g?autoplay=1&controls=0&mute=1&loop=1&playlist=4vLyqzOr14g&modestbranding=1&rel=0&showinfo=0" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    </div>
 
     <div class="container">
         <h1>Ninni turning 18!</h1>

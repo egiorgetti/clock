@@ -65,41 +65,68 @@
         h1 {
             font-family: 'Pacifico', cursive;
             font-size: 9rem;
-            color: #fff;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
             margin: 0;
-            animation: bounce 2s infinite;
             position: relative;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ff6b6b);
-            background-size: 200% auto;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700, #FFA500);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: bounce 2s infinite, gradient 3s linear infinite;
+            animation: bounce 2s infinite, gradient 3s linear infinite, shine 2s linear infinite;
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.5),
+                0 0 20px rgba(255, 215, 0, 0.3),
+                0 0 30px rgba(255, 215, 0, 0.2);
         }
 
-        .spotlight {
+        .sparkle {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            animation: spotlight 3s linear infinite;
-            transform: skewX(-20deg);
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: sparkle 1.5s linear infinite;
         }
 
-        @keyframes spotlight {
+        .sparkle::before,
+        .sparkle::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: sparkle 1.5s linear infinite;
+        }
+
+        .sparkle::before {
+            transform: translateX(-10px);
+        }
+
+        .sparkle::after {
+            transform: translateX(10px);
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(0.5);
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes shine {
             0% {
-                left: -100%;
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(1.2);
             }
             100% {
-                left: 200%;
+                filter: brightness(1);
             }
         }
 
@@ -112,6 +139,31 @@
             }
             100% {
                 background-position: 0% 50%;
+            }
+        }
+
+        .spotlight {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 215, 0, 0.3),
+                transparent
+            );
+            animation: spotlight 3s linear infinite;
+            transform: skewX(-20deg);
+        }
+
+        @keyframes spotlight {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 200%;
             }
         }
 
@@ -197,6 +249,10 @@
         <div class="title-container">
             <div class="spotlight"></div>
             <h1>Ninni turning 18!</h1>
+            <div class="sparkle" style="top: 20%; left: 20%;"></div>
+            <div class="sparkle" style="top: 30%; right: 20%;"></div>
+            <div class="sparkle" style="bottom: 20%; left: 30%;"></div>
+            <div class="sparkle" style="bottom: 30%; right: 30%;"></div>
         </div>
         <div class="timer-container">
             <div class="time-block">

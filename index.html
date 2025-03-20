@@ -176,21 +176,22 @@
 
         .confetti {
             position: fixed;
-            width: 4px;
-            height: 4px;
-            background-color: #f00;
+            width: 3px;
+            height: 3px;
+            background-color: #FFD700;
             border-radius: 50%;
-            animation: explode 1s ease-out forwards;
+            animation: glitter-explode 1.5s ease-out forwards;
             z-index: 0;
+            box-shadow: 0 0 4px #FFD700;
         }
 
-        @keyframes explode {
+        @keyframes glitter-explode {
             0% {
-                transform: scale(1);
+                transform: scale(1) translate(0, 0);
                 opacity: 1;
             }
             100% {
-                transform: scale(0);
+                transform: scale(0) translate(var(--tx), var(--ty));
                 opacity: 0;
             }
         }
@@ -203,7 +204,8 @@
             height: 100%;
             background-color: inherit;
             border-radius: 50%;
-            animation: explode 1s ease-out forwards;
+            box-shadow: 0 0 4px #FFD700;
+            animation: glitter-explode 1.5s ease-out forwards;
         }
 
         .confetti::before {
@@ -279,25 +281,41 @@
     </div>
 
     <script>
-        function createConfetti() {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
+        function createGlitterExplosion() {
+            const size = Math.random() * 100 + 50; // Random size between 50px and 150px
+            const numParticles = Math.floor(size / 5); // More particles for larger explosions
             
-            // Random position on screen
-            const x = Math.random() * window.innerWidth;
-            const y = Math.random() * window.innerHeight;
-            confetti.style.left = x + 'px';
-            confetti.style.top = y + 'px';
-            
-            // Random color
-            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            
-            // Random rotation
-            const rotation = Math.random() * 360;
-            confetti.style.transform = `rotate(${rotation}deg)`;
-            
-            document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 1000);
+            for (let i = 0; i < numParticles; i++) {
+                const glitter = document.createElement('div');
+                glitter.className = 'confetti';
+                
+                // Random position on screen
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                glitter.style.left = x + 'px';
+                glitter.style.top = y + 'px';
+                
+                // Random color variations of gold
+                const hue = 45 + (Math.random() * 10 - 5); // Slight variations around gold
+                const saturation = 80 + Math.random() * 20;
+                const lightness = 40 + Math.random() * 20;
+                glitter.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                
+                // Random explosion direction
+                const angle = (Math.random() * 360) * Math.PI / 180;
+                const distance = Math.random() * size;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                glitter.style.setProperty('--tx', `${tx}px`);
+                glitter.style.setProperty('--ty', `${ty}px`);
+                
+                // Random rotation
+                const rotation = Math.random() * 360;
+                glitter.style.transform = `rotate(${rotation}deg)`;
+                
+                document.body.appendChild(glitter);
+                setTimeout(() => glitter.remove(), 1500);
+            }
         }
 
         function updateTimer() {
@@ -321,12 +339,12 @@
             document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
         }
 
-        // Create multiple confetti pieces more frequently
+        // Create glitter explosions periodically
         setInterval(() => {
-            for (let i = 0; i < 5; i++) {
-                createConfetti();
+            if (Math.random() < 0.3) { // 30% chance to create an explosion each interval
+                createGlitterExplosion();
             }
-        }, 50);
+        }, 100);
 
         // Update timer immediately and then every second
         updateTimer();

@@ -187,6 +187,7 @@
             animation: glitter-explode 1.5s ease-out forwards;
             z-index: 0;
             box-shadow: 0 0 4px #FFD700;
+            opacity: 0;
         }
 
         @keyframes glitter-explode {
@@ -210,6 +211,7 @@
             border-radius: 50%;
             box-shadow: 0 0 4px #FFD700;
             animation: glitter-explode 1.5s ease-out forwards;
+            opacity: 0;
         }
 
         .confetti::before {
@@ -293,41 +295,36 @@
     </div>
 
     <script>
-        function createGlitterExplosion() {
-            const size = Math.random() * 100 + 50; // Random size between 50px and 150px
-            const numParticles = Math.floor(size / 5); // More particles for larger explosions
+        function createGlitterParticle() {
+            const glitter = document.createElement('div');
+            glitter.className = 'confetti';
             
-            for (let i = 0; i < numParticles; i++) {
-                const glitter = document.createElement('div');
-                glitter.className = 'confetti';
-                
-                // Random position on screen
-                const x = Math.random() * window.innerWidth;
-                const y = Math.random() * window.innerHeight;
-                glitter.style.left = x + 'px';
-                glitter.style.top = y + 'px';
-                
-                // Random color variations of gold
-                const hue = 45 + (Math.random() * 10 - 5); // Slight variations around gold
-                const saturation = 80 + Math.random() * 20;
-                const lightness = 40 + Math.random() * 20;
-                glitter.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-                
-                // Random explosion direction
-                const angle = (Math.random() * 360) * Math.PI / 180;
-                const distance = Math.random() * size;
-                const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance;
-                glitter.style.setProperty('--tx', `${tx}px`);
-                glitter.style.setProperty('--ty', `${ty}px`);
-                
-                // Random rotation
-                const rotation = Math.random() * 360;
-                glitter.style.transform = `rotate(${rotation}deg)`;
-                
-                document.body.appendChild(glitter);
-                setTimeout(() => glitter.remove(), 1500);
-            }
+            // Random position on screen
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            glitter.style.left = x + 'px';
+            glitter.style.top = y + 'px';
+            
+            // Random color variations of gold
+            const hue = 45 + (Math.random() * 10 - 5); // Slight variations around gold
+            const saturation = 80 + Math.random() * 20;
+            const lightness = 40 + Math.random() * 20;
+            glitter.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            
+            // Random explosion direction and distance
+            const angle = (Math.random() * 360) * Math.PI / 180;
+            const distance = Math.random() * 100 + 20; // Random distance between 20px and 120px
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+            glitter.style.setProperty('--tx', `${tx}px`);
+            glitter.style.setProperty('--ty', `${ty}px`);
+            
+            // Random rotation
+            const rotation = Math.random() * 360;
+            glitter.style.transform = `rotate(${rotation}deg)`;
+            
+            document.body.appendChild(glitter);
+            setTimeout(() => glitter.remove(), 1500);
         }
 
         function updateTimer() {
@@ -351,12 +348,12 @@
             document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
         }
 
-        // Create glitter explosions periodically
+        // Create individual glitter particles with random timing
         setInterval(() => {
-            if (Math.random() < 0.3) { // 30% chance to create an explosion each interval
-                createGlitterExplosion();
+            if (Math.random() < 0.4) { // 40% chance to create a particle each interval
+                createGlitterParticle();
             }
-        }, 100);
+        }, 50);
 
         // Update timer immediately and then every second
         updateTimer();

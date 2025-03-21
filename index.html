@@ -446,7 +446,7 @@
         }
 
         function updateTimer() {
-            const targetDate = new Date('2025-03-22T00:00:00+01:00');
+            const targetDate = new Date(Date.now() - 5000); // Set to 5 seconds ago
             const now = new Date();
             const difference = targetDate - now;
 

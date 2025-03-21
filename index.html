@@ -27,6 +27,11 @@
             height: 100vh;
             z-index: -1;
             pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #video-background.hidden {
+            opacity: 0;
         }
 
         #video-background iframe {
@@ -443,6 +448,12 @@
             // Clear any existing intervals
             if (celebrationInterval) {
                 clearInterval(celebrationInterval);
+            }
+            
+            // Hide the video background
+            const videoBackground = document.getElementById('video-background');
+            if (videoBackground) {
+                videoBackground.classList.add('hidden');
             }
             
             // Hide the container

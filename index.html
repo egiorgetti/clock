@@ -46,7 +46,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.7), rgba(78, 205, 196, 0.7));
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.85), rgba(78, 205, 196, 0.85));
             z-index: -1;
         }
 
@@ -151,7 +151,7 @@
             margin-top: auto;
             padding: 1rem;
             position: fixed;
-            bottom: 0;
+            bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -177,11 +177,11 @@
             font-family: 'Righteous', cursive;
             font-size: 2.2rem;
             color: #fff;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-            background: rgba(255, 255, 255, 0.1);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            background: rgba(255, 255, 255, 0.15);
             padding: 0.5rem;
             border-radius: 15px;
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(3px);
             width: 100%;
             box-sizing: border-box;
             min-width: 0;
@@ -233,6 +233,61 @@
             transform: translateX(15px);
         }
 
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .celebration h1 {
+            font-size: 5rem;
+            text-align: center;
+            color: #FFD700;
+            text-shadow: 
+                2px 2px 0 #FFA500,
+                4px 4px 0 rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(255, 215, 0, 0.8);
+            animation: celebrate 2s infinite;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .firework {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            animation: firework 1.5s ease-out forwards;
+            z-index: 5;
+            box-shadow: 0 0 10px #FFD700;
+        }
+
+        @keyframes firework {
+            0% {
+                transform: translate(var(--startX), var(--startY)) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(var(--midX), var(--midY)) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--endX), var(--endY)) scale(0);
+                opacity: 0;
+            }
+        }
+
         @media (min-width: 768px) {
             body {
                 padding: 0;
@@ -251,6 +306,7 @@
             .timer-container {
                 padding: 2rem;
                 gap: 2rem;
+                bottom: 3rem;
             }
 
             h1 {
@@ -264,6 +320,10 @@
             .timer {
                 font-size: 3.5rem;
                 padding: 1rem 2rem;
+            }
+
+            .celebration h1 {
+                font-size: 7rem;
             }
         }
     </style>
@@ -302,6 +362,10 @@
         </div>
     </div>
 
+    <div class="celebration">
+        <h1>Ninni is 18!</h1>
+    </div>
+
     <script>
         function createGlitterParticle() {
             const glitter = document.createElement('div');
@@ -335,6 +399,52 @@
             setTimeout(() => glitter.remove(), 1500);
         }
 
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            
+            // Random starting position
+            const startX = Math.random() * window.innerWidth;
+            const startY = window.innerHeight;
+            firework.style.setProperty('--startX', `${startX}px`);
+            firework.style.setProperty('--startY', `${startY}px`);
+            
+            // Random mid position (explosion point)
+            const midX = startX + (Math.random() * 200 - 100);
+            const midY = window.innerHeight * 0.3 + Math.random() * window.innerHeight * 0.4;
+            firework.style.setProperty('--midX', `${midX}px`);
+            firework.style.setProperty('--midY', `${midY}px`);
+            
+            // Random end position
+            const angle = (Math.random() * 360) * Math.PI / 180;
+            const distance = Math.random() * 200 + 100;
+            const endX = midX + Math.cos(angle) * distance;
+            const endY = midY + Math.sin(angle) * distance;
+            firework.style.setProperty('--endX', `${endX}px`);
+            firework.style.setProperty('--endY', `${endY}px`);
+            
+            // Random color variations of gold
+            const hue = 45 + (Math.random() * 10 - 5);
+            const saturation = 80 + Math.random() * 20;
+            const lightness = 40 + Math.random() * 20;
+            firework.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            
+            document.body.appendChild(firework);
+            setTimeout(() => firework.remove(), 1500);
+        }
+
+        function startCelebration() {
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.celebration').style.display = 'flex';
+            
+            // Create fireworks frequently
+            setInterval(() => {
+                for (let i = 0; i < 5; i++) {
+                    createFirework();
+                }
+            }, 50);
+        }
+
         function updateTimer() {
             const targetDate = new Date('2025-03-22T00:00:00+01:00');
             const now = new Date();
@@ -344,6 +454,7 @@
                 document.getElementById('hours').textContent = '00';
                 document.getElementById('minutes').textContent = '00';
                 document.getElementById('seconds').textContent = '00';
+                startCelebration();
                 return;
             }
 
@@ -358,7 +469,7 @@
 
         // Create individual glitter particles with random timing
         setInterval(() => {
-            if (Math.random() < 0.4) { // 40% chance to create a particle each interval
+            if (Math.random() < 0.4) {
                 createGlitterParticle();
             }
         }, 50);

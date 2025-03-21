@@ -286,6 +286,8 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            position: relative;
+            z-index: 11;
         }
 
         @keyframes celebrate {
@@ -446,20 +448,57 @@
             firework.style.boxShadow = `0 0 15px ${color}`;
             
             document.body.appendChild(firework);
-            setTimeout(() => firework.remove(), 1500);
+            
+            // Clean up after animation
+            setTimeout(() => {
+                if (firework && firework.parentNode) {
+                    firework.parentNode.removeChild(firework);
+                }
+            }, 1500);
         }
 
+        let celebrationInterval;
+
         function startCelebration() {
-            document.querySelector('.container').style.display = 'none';
-            document.querySelector('.celebration').style.display = 'flex';
+            // Clear any existing intervals
+            if (celebrationInterval) {
+                clearInterval(celebrationInterval);
+            }
             
-            // Create fireworks more frequently and in larger numbers
-            setInterval(() => {
-                for (let i = 0; i < 8; i++) {
+            // Hide the container
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.display = 'none';
+            }
+            
+            // Show celebration
+            const celebration = document.querySelector('.celebration');
+            if (celebration) {
+                celebration.style.display = 'flex';
+            }
+            
+            // Create fireworks with reduced frequency and quantity
+            celebrationInterval = setInterval(() => {
+                // Create 4 fireworks instead of 8
+                for (let i = 0; i < 4; i++) {
                     createFirework();
                 }
-            }, 30);
+            }, 100); // Reduced frequency from 30ms to 100ms
         }
+
+        // Clean up function for when the page is unloaded
+        window.addEventListener('beforeunload', () => {
+            if (celebrationInterval) {
+                clearInterval(celebrationInterval);
+            }
+            // Remove all fireworks
+            const fireworks = document.querySelectorAll('.firework');
+            fireworks.forEach(firework => {
+                if (firework && firework.parentNode) {
+                    firework.parentNode.removeChild(firework);
+                }
+            });
+        });
 
         function updateTimer() {
             const targetDate = new Date(Date.now() - 5000); // Set to 5 seconds ago
